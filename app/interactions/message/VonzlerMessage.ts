@@ -1,10 +1,12 @@
 import { TextChannel } from "discord.js";
 import { DeferType } from "../../interfaces/index.js";
 import { EmojiResolver } from "../../utils/index.js";
+import { CustomRateLimiter, RateLimiterType } from "../../utils/index.js";
 
 
 export class VonzlerMessage{
     public triggerWords = ['alpaka', 'vonzler', 'kamel'];
+    public rateLimiter = new CustomRateLimiter(1, 120000, RateLimiterType.GUILD);
     public deferType = DeferType.PUBLIC;
 
     private emoteList = [
