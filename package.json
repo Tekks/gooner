@@ -1,0 +1,39 @@
+{
+  "name": "gooner",
+  "version": "0.0.1",
+  "description": "Cutie",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "start:dev": "nodemon --exec node --loader ts-node/esm app/index.ts",
+    "start:prod": "npm run build && node dist/index.js"
+  },
+  "author": "Tekks",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
+    "eslint": "^9.10.0",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "discord.js": "^14.16.2",
+    "dotenv": "^16.4.5",
+    "pino": "^9.4.0",
+    "pino-pretty": "^11.2.2",
+    "typescript": "^5.6.2"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "./app/**/*.ts"
+    ],
+    "ext": "ts",
+    "execMap": {
+      "ts": "node --loader ts-node/esm ./app/index.ts"
+    },
+    "delay": "2000"
+  }
+}
