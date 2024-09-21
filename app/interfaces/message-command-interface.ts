@@ -1,5 +1,5 @@
 import { TextChannel } from "discord.js";
-import { DeferType } from ".";
+import { DeferType } from "./index.js";
 
 export interface MessageCommand {
     triggerWords: string[];
