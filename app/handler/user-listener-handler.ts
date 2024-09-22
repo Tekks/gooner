@@ -21,8 +21,13 @@ export class UserListenerHandler {
 
         if (!userListener) { return; }
 
+        // Run some checks
+        if (userListener.rateLimiter) {
+            if (userListener.rateLimiter.take(msg.author.id)) { return; }
+        }
+
         try {
-            await userListener.execute(msg.channel, msg.content);
+            await userListener.execute(msg, msg.channel);
         } catch (error) {
             Logger.error(error);
         }

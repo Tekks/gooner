@@ -1,6 +1,8 @@
-import { TextChannel } from "discord.js";
+import { Message, TextChannel } from "discord.js";
+import { CustomRateLimiter } from "../utils/index.js";
 
 export interface UserListener {
     userName: string;
-    execute(channel: TextChannel, ...args: String[]);
+    rateLimiter?: CustomRateLimiter
+    execute(msg: Message, channel: TextChannel);
 }
