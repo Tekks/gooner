@@ -23,6 +23,7 @@ export class MessageHandler {
         const messageCommand: MessageCommand = dcbot.messageCommands.find((command) => {
             return command.triggerWords.some((name) => args.includes(name));
         });
+        
         if (!messageCommand) { return; }
 
         // Run some checks
