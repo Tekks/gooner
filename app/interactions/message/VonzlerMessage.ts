@@ -5,7 +5,7 @@ import { CustomRateLimiter, RateLimiterType } from "../../utils/index.js";
 
 
 export class VonzlerMessage{
-    public triggerWords = ['alpaka', 'vonzler', 'kamel'];
+    public triggerWords = ['alpaka', 'vonzler'];
     public rateLimiter = new CustomRateLimiter(1, 120000, RateLimiterType.GUILD);
     public deferType = DeferType.PUBLIC;
 

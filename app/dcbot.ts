@@ -2,7 +2,7 @@ import { ActivityType, AutocompleteInteraction, Client, CommandInteraction, Even
 import { CommandHandler, MessageHandler, UserListenerHandler } from "./handler/index.js";
 import { Command, Config, MessageCommand, UserListener } from "./interfaces/index.js";
 import { BotConfig, CommandExport, Logger } from "./utils/index.js";
-import { PingCommand, WaifuCommand } from "./interactions/commands/index.js";
+import { PingCommand, TekksAiCommand, WaifuCommand } from "./interactions/commands/index.js";
 import { DogeMessage, VonzlerMessage } from "./interactions/message/index.js";
 import { DogeListener, TekksListener } from "./interactions/userlistener/index.js";
 
@@ -14,7 +14,8 @@ export class dcbot {
 
     public commands: Command[] = [
         new PingCommand(),
-        new WaifuCommand()
+        new WaifuCommand(),
+        // new TekksAiCommand()
     ]
 
     public messageCommands: MessageCommand[] = [
@@ -23,7 +24,7 @@ export class dcbot {
     ]
 
     public userListeners: UserListener[] = [
-        new DogeListener(),
+        // new DogeListener(),
         new TekksListener()
     ];
 
