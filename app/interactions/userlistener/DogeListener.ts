@@ -1,23 +1,59 @@
 import { Message, TextChannel } from "discord.js";
 import { CustomRateLimiter, EmojiResolver, RateLimiterType } from "../../utils/index.js";
 
+
+interface DogeResponsePattern {
+    pattern: string[];
+    response: string;
+    react: string | null;
+}
+
 export class DogeListener {
 
-    public userName: string = 'doge55';
+    public userName: string = 'doge';
     public rateLimiter = new CustomRateLimiter(1, 120000, RateLimiterType.USER);
 
+
+    private dogeResponsePattern: DogeResponsePattern[] = [
+        {
+            "pattern": ["hallo", "henlo", "huhu"],
+            "react": EmojiResolver.CustomEmojis.nachoPopcat,
+            "response": `Henloooo! :${EmojiResolver.CustomEmojis.nachoPopcat}:`
+        },
+        {
+            "pattern": ["nachoZiii", "ziii", "nacho"],
+            "react": `${EmojiResolver.CustomEmojis.nachoPopcat}`,
+            "response": `:${EmojiResolver.CustomEmojis.nachoZiii}:`
+        }
+    ]
     public async execute(msg: Message, channel: TextChannel) {
 
-        const content = msg.content.toLocaleLowerCase();
-        const nacho_ziii_reaction = ["nachoZiii", "nacho", "ziii"];
+        let pattern = this.findBestPattern(msg.content);
+        if (!pattern) { return; }
+        if (pattern.react) { await msg.react(pattern.react); }
 
-        if (nacho_ziii_reaction.some((word) => content.includes(word))) {
-            await msg.react(EmojiResolver.get('gooner_nachoZiii'));
-            await msg.reply(`${EmojiResolver.get('gooner_nachoZiii')}`);
-            return;
+        await msg.reply(pattern.response);
+
+    }
+
+    private findBestPattern(message: string): DogeResponsePattern | null {
+        const words = message.toLocaleLowerCase().split(/\s+/);
+        let bestMatch: DogeResponsePattern = null;
+
+        let maxMatchCount = 0;
+        for (const patternObj of this.dogeResponsePattern) {
+            let matchCount = 0;
+
+            for (const word of patternObj.pattern) {
+                if (words.includes(word)) { maxMatchCount++; }
+            }
+
+            if (matchCount > maxMatchCount) {
+                maxMatchCount = matchCount;
+                bestMatch = patternObj;
+            }
+            return bestMatch;
         }
-
-        return;
     }
 
 }
