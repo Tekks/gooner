@@ -1,59 +1,69 @@
-import { Message, TextChannel } from "discord.js";
+import { Message, PresenceUpdateStatus, TextChannel } from "discord.js";
 import { CustomRateLimiter, EmojiResolver, RateLimiterType } from "../../utils/index.js";
+import { ResponsePattern, UserListener } from "../../interfaces/index.js";
 
-
-interface DogeResponsePattern {
-    pattern: string[];
-    response: string;
-    react: string | null;
-}
 
 export class DogeListener {
 
-    public userName: string = 'doge';
-    public rateLimiter = new CustomRateLimiter(1, 120000, RateLimiterType.USER);
+    public userName: string = 'doge55';
+    public rateLimiter: CustomRateLimiter = new CustomRateLimiter(1, 5 * 60 * 1000, RateLimiterType.USER);
 
-
-    private dogeResponsePattern: DogeResponsePattern[] = [
+    private responsePattern: ResponsePattern[] = [
         {
             "pattern": ["hallo", "henlo", "huhu"],
-            "react": EmojiResolver.CustomEmojis.nachoPopcat,
-            "response": `Henloooo! :${EmojiResolver.CustomEmojis.nachoPopcat}:`
+            "reactEmoji": EmojiResolver.CustomEmojis.nachoPopcat,
+            "responses": [`Henloooo! :${EmojiResolver.CustomEmojis.nachoPopcat}:`]
         },
         {
             "pattern": ["nachoZiii", "ziii", "nacho"],
-            "react": `${EmojiResolver.CustomEmojis.nachoPopcat}`,
-            "response": `:${EmojiResolver.CustomEmojis.nachoZiii}:`
+            "reactEmoji": `${EmojiResolver.CustomEmojis.nachoPopcat}`,
+            "responses": [`:${EmojiResolver.CustomEmojis.nachoPopcat}:`]
+        },
+        {
+            "pattern": ["tekks", "tekksi"],
+            "reactEmoji": `${EmojiResolver.CustomEmojis.nachoZiii}`,
+            "responses": [`Doge is n cutie :${EmojiResolver.CustomEmojis.nachoPopcat}:`]
         }
-    ]
+    ];
+
     public async execute(msg: Message, channel: TextChannel) {
 
         let pattern = this.findBestPattern(msg.content);
         if (!pattern) { return; }
-        if (pattern.react) { await msg.react(pattern.react); }
+        if (pattern.reactEmoji) { await msg.react(EmojiResolver.resolveEmoji(pattern.reactEmoji)); }
 
-        await msg.reply(pattern.response);
+        let response = pattern.responses[Math.floor(Math.random() * pattern.responses.length)];
 
+        await msg.reply(EmojiResolver.replaceEmojisInMessage(response));
     }
 
-    private findBestPattern(message: string): DogeResponsePattern | null {
+
+    private findBestPattern(message: string): ResponsePattern | null {
         const words = message.toLocaleLowerCase().split(/\s+/);
-        let bestMatch: DogeResponsePattern = null;
+        let bestMatch: ResponsePattern = null;
 
         let maxMatchCount = 0;
-        for (const patternObj of this.dogeResponsePattern) {
+        for (const patternObj of this.responsePattern) {
             let matchCount = 0;
 
             for (const word of patternObj.pattern) {
-                if (words.includes(word)) { maxMatchCount++; }
+                if (words.includes(word)) { matchCount++; }
             }
 
             if (matchCount > maxMatchCount) {
                 maxMatchCount = matchCount;
                 bestMatch = patternObj;
             }
-            return bestMatch;
         }
+        return bestMatch;
+    }
+
+    public async prechecks(msg: Message): Promise<boolean> {
+        let tekks = msg.guild.members.cache.find(member => member.user.username === 'tekks');
+        if (!tekks) { return false; }
+        if (tekks.partial) { await tekks.fetch(); }
+        if (tekks.presence?.status !== undefined && tekks.presence?.status !== PresenceUpdateStatus.Offline) { return false; }
+        return true;
     }
 
 }

@@ -29,9 +29,9 @@ export class CommandHandler {
         } catch (error) {
             Logger.error(error);
             if (intr.deferred) {
-                await intr.editReply({ content: `${EmojiResolver.get('gooner_nachoCry')} Es ist ein Fehler aufgetreten` });
+                await intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
             } else {
-                await intr.reply({ content: `${EmojiResolver.get('gooner_nachoCry')} Es ist ein Fehler aufgetreten`, ephemeral: true });
+                await intr.reply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten`, ephemeral: true });
             }
         }
     }

@@ -9,6 +9,6 @@ export class DogeMessage {
 
     public async execute(channel: TextChannel, ...args: String[]) {
         return;
-        channel.send(`${EmojiResolver.get('gooner_nachoPopcat')}`);
+        channel.send(`${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoZiii)}`);
     }
 }

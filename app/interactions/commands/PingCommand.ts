@@ -11,6 +11,6 @@ export class PingCommand {
         .setDescription('Antwortet mit Pong :3');
         
     public async execute(intr: ChatInputCommandInteraction) {
-        await intr.reply(`${EmojiResolver.get('gooner_nachoZiii')} Pong :3`);
+        await intr.reply(`${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoZiii)} Pong :3`);
     }
 }
