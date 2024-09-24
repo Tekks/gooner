@@ -11,7 +11,7 @@ interface TekksResponsePattern {
 export class TekksListener {
 
     public userName: string = 'tekks';
-    // public rateLimiter = new CustomRateLimiter(1, 120000, RateLimiterType.USER);
+    public rateLimiter = new CustomRateLimiter(1, 120000, RateLimiterType.USER);
 
 
     private dogeResponsePattern: TekksResponsePattern[] = [
@@ -23,16 +23,17 @@ export class TekksListener {
         {
             "pattern": ["nachoZiii", "ziii", "nacho"],
             "react": `${EmojiResolver.CustomEmojis.nachoPopcat}`,
-            "response": `:${EmojiResolver.CustomEmojis.nachoZiii}:`
+            "response": `:${EmojiResolver.CustomEmojis.nachoPopcat}:`
         }
     ]
     public async execute(msg: Message, channel: TextChannel) {
-
+        
         let pattern = this.findBestPattern(msg.content);
+        console.log(pattern)
         if (!pattern) { return; }
-        if (pattern.react) { await msg.react(pattern.react); }
+        if (pattern.react) { await msg.react(EmojiResolver.get(pattern.react)); }
 
-        await msg.reply(pattern.response);
+        await msg.reply(EmojiResolver.replaceEmojisInMessage(pattern.response));
     }
 
     private findBestPattern(message: string): TekksResponsePattern | null {
@@ -44,15 +45,15 @@ export class TekksListener {
             let matchCount = 0;
 
             for (const word of patternObj.pattern) {
-                if (words.includes(word)) { maxMatchCount++; }
+                if (words.includes(word)) { matchCount++; }
             }
 
             if (matchCount > maxMatchCount) {
                 maxMatchCount = matchCount;
                 bestMatch = patternObj;
             }
-            return bestMatch;
         }
+        return bestMatch;
     }
 
 }

@@ -10,7 +10,7 @@ export class UserListenerHandler {
         if (msg.author.bot) { return; }
         if (!msg.guild) { return; }
         if (msg.channel.type !== ChannelType.GuildText) { return; }
-
+        
         // Ignore messages from channels that are not in the whitelist
         const parentChannel = msg.guild.channels.cache.get(msg.channel.id)?.parent;
         if (!dcbot.config.WHITELIST.CATEGORIES.includes(parentChannel?.id || '')) { return; }
