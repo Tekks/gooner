@@ -20,6 +20,6 @@ export class VonzlerMessage{
 
     public async execute(channel: TextChannel, ...args: String[]){
         const random = Math.floor(Math.random() * this.emoteList.length);
-        channel.send(`${EmojiResolver.get(this.emoteList[random])}`);
+        channel.send(`${EmojiResolver.resolveEmoji(this.emoteList[random])}`);
     }
 }

@@ -17,9 +17,10 @@ export class EmojiResolver {
         nachoPopcat: "gooner_nachoPopcat"
     }
 
-    public static get(emojiName: string): GuildEmoji {
+    public static resolveEmoji(emojiName: string, nullable?: boolean): GuildEmoji | null {
         let emoji = dcbot.client.emojis.cache.find(emoji => emoji.name === emojiName);
-        if (!emoji) { return dcbot.client.emojis.cache.get("1285347155975864481"); }
+        if (!emoji && nullable) { return null; }
+        if (!emoji) { return dcbot.client.emojis.cache.find(emoji => emoji.name === this.CustomEmojis.nachoCry); }
         return emoji;
     }
 
@@ -28,7 +29,7 @@ export class EmojiResolver {
         let matches = message.match(regex);
         if (!matches) { return message; }
         matches.forEach(match => {
-            const emoji = EmojiResolver.get(match);
+            const emoji = EmojiResolver.resolveEmoji(match.replace(/:/g, ''), true);
             if (!emoji) { return; }
             message = message.replace(match, emoji.toString());
         });

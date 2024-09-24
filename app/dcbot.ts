@@ -4,7 +4,7 @@ import { Command, Config, MessageCommand, UserListener } from "./interfaces/inde
 import { BotConfig, CommandExport, Logger } from "./utils/index.js";
 import { PingCommand, TekksAiCommand, WaifuCommand } from "./interactions/commands/index.js";
 import { DogeMessage, VonzlerMessage } from "./interactions/message/index.js";
-import { DogeListener, TekksListener } from "./interactions/userlistener/index.js";
+import { DogeListener } from "./interactions/userlistener/index.js";
 
 
 export class dcbot {
@@ -24,8 +24,7 @@ export class dcbot {
     ]
 
     public userListeners: UserListener[] = [
-        // new DogeListener(),
-        new TekksListener()
+        new DogeListener()
     ];
 
     private commandHandler = new CommandHandler();
