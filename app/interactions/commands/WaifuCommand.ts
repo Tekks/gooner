@@ -41,7 +41,6 @@ export class WaifuCommand {
 				)
 		);
 
-
 	public async execute(intr: ChatInputCommandInteraction) {
 		const response = await fetch(`https://api.waifu.pics/sfw/${intr.options.getString('type')}`);
 		const body = await response.json();
