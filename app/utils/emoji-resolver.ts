@@ -1,3 +1,4 @@
+import { GuildEmoji } from "discord.js";
 import { dcbot } from "../index.js";
 
 
@@ -16,13 +17,13 @@ export class EmojiResolver {
         nachoPopcat: "gooner_nachoPopcat"
     }
 
-    public static get(emojiName: string)  {
+    public static get(emojiName: string): GuildEmoji {
         let emoji = dcbot.client.emojis.cache.find(emoji => emoji.name === emojiName);
         if (!emoji) { return dcbot.client.emojis.cache.get("1285347155975864481"); }
         return emoji;
     }
 
-    public static replaceEmojisInMessage(message: string) {
+    public static replaceEmojisInMessage(message: string): string {
         let regex = /:[a-zA-Z0-9_-]+:/g;
         let matches = message.match(regex);
         if (!matches) { return message; }
