@@ -19,9 +19,9 @@ export class MessageHandler {
         if (!dcbot.config.WHITELIST.CATEGORIES.includes(parentChannel?.id || '')) { return; }
         
         // Find the best fitting message command
-        const args = msg.content.split(' ').map((arg) => arg.toLowerCase());
+        const words = msg.content.split(' ').map((arg) => arg.toLowerCase());
         const messageCommand: MessageCommand = dcbot.messageCommands.find((command) => {
-            return command.triggerWords.some((name) => args.includes(name));
+            return command.triggerWords.some((name) => words.includes(name));
         });
         
         if (!messageCommand) { return; }
@@ -38,7 +38,7 @@ export class MessageHandler {
         }
         
         try {
-            await messageCommand.execute(msg.channel, ...args);
+            await messageCommand.execute(msg.channel, ...words);
         } catch (error) {
             Logger.error(error);
         }

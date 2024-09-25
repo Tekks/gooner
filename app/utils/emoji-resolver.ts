@@ -17,6 +17,11 @@ export class EmojiResolver {
         nachoPopcat: "gooner_nachoPopcat"
     }
 
+    public static removeEmojiContext(message: string): string {
+        let regex = /<:([a-zA-Z0-9_-]+):([0-9]+)>/g;
+        return message.replace(regex, '$1');
+    }
+
     public static resolveEmoji(emojiName: string, nullable?: boolean): GuildEmoji | null {
         let emoji = dcbot.client.emojis.cache.find(emoji => emoji.name === emojiName);
         if (!emoji && nullable) { return null; }

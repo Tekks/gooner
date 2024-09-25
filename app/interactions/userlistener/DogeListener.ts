@@ -1,5 +1,5 @@
 import { Message, PresenceUpdateStatus, TextChannel } from "discord.js";
-import { CustomRateLimiter, EmojiResolver, RateLimiterType } from "../../utils/index.js";
+import { CustomRateLimiter, EmojiResolver, Logger, RateLimiterType } from "../../utils/index.js";
 import { ResponsePattern, UserListener } from "../../interfaces/index.js";
 
 
@@ -15,7 +15,7 @@ export class DogeListener {
             "responses": [`Henloooo! :${EmojiResolver.CustomEmojis.nachoPopcat}:`]
         },
         {
-            "pattern": ["nachoZiii", "ziii", "nacho"],
+            "pattern": ["nachoZiii", "ziii", "nacho", "nachoziiistatic"],
             "reactEmoji": `${EmojiResolver.CustomEmojis.nachoPopcat}`,
             "responses": [`:${EmojiResolver.CustomEmojis.nachoPopcat}:`]
         },
@@ -27,11 +27,12 @@ export class DogeListener {
     ];
 
     public async execute(msg: Message, channel: TextChannel) {
-
-        let pattern = this.findBestPattern(msg.content);
+        let pattern = this.findBestPattern(EmojiResolver.removeEmojiContext(msg.content));
         if (!pattern) { return; }
-        if (pattern.reactEmoji) { await msg.react(EmojiResolver.resolveEmoji(pattern.reactEmoji)); }
 
+        if (this.rateLimiter.take(msg.author.id)) { return; }
+
+        if (pattern.reactEmoji) { await msg.react(EmojiResolver.resolveEmoji(pattern.reactEmoji)); }
         let response = pattern.responses[Math.floor(Math.random() * pattern.responses.length)];
 
         await msg.reply(EmojiResolver.replaceEmojisInMessage(response));
@@ -41,13 +42,12 @@ export class DogeListener {
     private findBestPattern(message: string): ResponsePattern | null {
         const words = message.toLocaleLowerCase().split(/\s+/);
         let bestMatch: ResponsePattern = null;
-
         let maxMatchCount = 0;
         for (const patternObj of this.responsePattern) {
             let matchCount = 0;
 
-            for (const word of patternObj.pattern) {
-                if (words.includes(word)) { matchCount++; }
+            for (const pattern of patternObj.pattern) {
+                if (words.includes(pattern)) { matchCount++; }
             }
 
             if (matchCount > maxMatchCount) {
@@ -59,6 +59,8 @@ export class DogeListener {
     }
 
     public async prechecks(msg: Message): Promise<boolean> {
+        // Tekks check
+        await msg.guild.members.fetch();
         let tekks = msg.guild.members.cache.find(member => member.user.username === 'tekks');
         if (!tekks) { return false; }
         if (tekks.partial) { await tekks.fetch(); }

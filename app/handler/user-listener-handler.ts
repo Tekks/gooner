@@ -24,7 +24,6 @@ export class UserListenerHandler {
 
         // Run some checks
         if (userListener.prechecks) { if (!await userListener.prechecks(msg)) { return; } }
-        if (userListener.rateLimiter) { if (userListener.rateLimiter.take(msg.author.id)) { return; } }
 
         try {
             await userListener.execute(msg, msg.channel);
