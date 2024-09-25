@@ -15,7 +15,7 @@ export class dcbot {
     public commands: Command[] = [
         new PingCommand(),
         new WaifuCommand(),
-        // new TekksAiCommand()
+        new TekksAiCommand()
     ]
 
     public messageCommands: MessageCommand[] = [

@@ -14,7 +14,6 @@ export class TekksAiCommand {
 
     public async execute(intr: ChatInputCommandInteraction) {
         const content = intr.options.getString('content');
-        Logger.info(`Tekks AI: ${content}`);
 
         const response = await fetch('http://172.20.10.100:11434/api/generate', {
             method: 'POST',
