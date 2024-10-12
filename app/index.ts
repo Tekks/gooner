@@ -10,7 +10,8 @@ export const dcbot = new dcBot(
             GatewayIntentBits.MessageContent,
             GatewayIntentBits.GuildMembers,
             GatewayIntentBits.GuildModeration,
-            GatewayIntentBits.GuildVoiceStates
+            GatewayIntentBits.GuildVoiceStates,
+            GatewayIntentBits.GuildPresences
         ]
     })
 );
