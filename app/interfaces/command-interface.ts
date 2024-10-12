@@ -1,10 +1,10 @@
-import { SlashCommandBuilder, SlashCommandOptionsOnlyBuilder,  } from "discord.js";
+import { SlashCommandBuilder, SlashCommandOptionsOnlyBuilder, SlashCommandSubcommandsOnlyBuilder,  } from "discord.js";
 import { DeferType } from ".";
 
 
 export interface Command {
     name: string;
-    data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;
+    data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
     deferType: DeferType;
     execute(...args: any);
 }

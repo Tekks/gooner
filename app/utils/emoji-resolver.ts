@@ -14,7 +14,8 @@ export class EmojiResolver {
         alpaka06: "gooner_alpaka_06",
         nachoCry: "gooner_nachoCry",
         nachoZiii: "gooner_nachoZiii",
-        nachoPopcat: "gooner_nachoPopcat"
+        nachoPopcat: "gooner_nachoPopcat",
+        elisHalt: "gooner_elisHalt",
     }
 
     public static removeEmojiContext(message: string): string {

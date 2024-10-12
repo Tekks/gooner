@@ -14,6 +14,7 @@ export class CommandHandler {
         if (commands.length === 0) { return };
         let command = commands[0];
 
+
         if (intr.deferred) { return; }
 
         try {

@@ -12,17 +12,17 @@ export class DogeListener {
         {
             "pattern": ["hallo", "henlo", "huhu"],
             "reactEmoji": EmojiResolver.CustomEmojis.nachoPopcat,
-            "responses": [`Henloooo! :${EmojiResolver.CustomEmojis.nachoPopcat}:`]
+            "responses": [`Henloooo! :${EmojiResolver.CustomEmojis.nachoPopcat}:`, `Henloooo sweety! :${EmojiResolver.CustomEmojis.nachoZiii}:`]
         },
         {
             "pattern": ["nachoZiii", "ziii", "nacho", "nachoziiistatic"],
             "reactEmoji": `${EmojiResolver.CustomEmojis.nachoPopcat}`,
-            "responses": [`:${EmojiResolver.CustomEmojis.nachoPopcat}:`]
+            "responses": [`:${EmojiResolver.CustomEmojis.nachoZiii}: ZIIIIIIIII`, `:${EmojiResolver.CustomEmojis.nachoZiii}: ZIIIIIIIII`]
         },
         {
             "pattern": ["tekks", "tekksi"],
             "reactEmoji": `${EmojiResolver.CustomEmojis.nachoZiii}`,
-            "responses": [`Doge is n cutie :${EmojiResolver.CustomEmojis.nachoPopcat}:`]
+            "responses": [`Doge is n cutie :${EmojiResolver.CustomEmojis.nachoPopcat}:`, `DOGEEEEEEEE :${EmojiResolver.CustomEmojis.nachoPopcat}:`]
         }
     ];
 
@@ -63,9 +63,11 @@ export class DogeListener {
         await msg.guild.members.fetch();
         let tekks = msg.guild.members.cache.find(member => member.user.username === 'tekks');
         if (!tekks) { return false; }
-        if (tekks.partial) { await tekks.fetch(); }
-        if (tekks.presence?.status !== undefined && tekks.presence?.status !== PresenceUpdateStatus.Offline) { return false; }
-        return true;
+        await tekks.fetch();
+        Logger.info(`Tekks status: ${tekks.presence?.status}`);
+        if (tekks.presence?.status === undefined ) { return true; }
+        if (tekks.presence?.status === PresenceUpdateStatus.Offline) { return true; }
+        return false;
     }
 
 }
