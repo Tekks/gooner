@@ -1,6 +1,6 @@
 import { AttachmentBuilder, ChannelType, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { DeferType } from '../../interfaces/index.js';
-import { EmojiResolver, Logger } from '../../utils/index.js';
+import { EmojiResolver } from '../../utils/index.js';
 
 
 export class WaifuCommand {

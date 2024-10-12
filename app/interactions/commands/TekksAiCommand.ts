@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, CommandInteraction, Interaction, SlashCommandBuilder } from "discord.js";
-import { EmojiResolver, Logger } from "../../utils/index.js";
+import { EmojiResolver } from "../../utils/index.js";
 import { DeferType } from "../../interfaces/index.js";
 
 

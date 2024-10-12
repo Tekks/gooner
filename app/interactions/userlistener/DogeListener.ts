@@ -64,7 +64,6 @@ export class DogeListener {
         let tekks = msg.guild.members.cache.find(member => member.user.username === 'tekks');
         if (!tekks) { return false; }
         await tekks.fetch();
-        Logger.info(`Tekks status: ${tekks.presence?.status}`);
         if (tekks.presence?.status === undefined ) { return true; }
         if (tekks.presence?.status === PresenceUpdateStatus.Offline) { return true; }
         return false;
