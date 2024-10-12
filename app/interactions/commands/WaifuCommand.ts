@@ -1,6 +1,6 @@
 import { AttachmentBuilder, ChannelType, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { DeferType } from '../../interfaces/index.js';
-import { EmojiResolver } from '../../utils/index.js';
+import { EmojiResolver, Logger } from '../../utils/index.js';
 
 
 export class WaifuCommand {
@@ -70,9 +70,10 @@ export class WaifuCommand {
 
 	public async execute(intr: ChatInputCommandInteraction) {
 		const category = intr.options.getSubcommand();
-		if (category === 'nsfw' && intr.channel.type === ChannelType.GuildText && intr.channel.nsfw === false) {
+		if (category === 'nsfw' && (intr.channel.type === ChannelType.GuildText || intr.channel.type === ChannelType.GuildVoice) && intr.channel.nsfw === false) {
 			return intr.editReply(`${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.elisHalt)} In NSFW Channels Only!`);
 		}
+
 		const response = await fetch(`https://api.waifu.pics/${category}/${intr.options.getString('type')}`);
 		const body = await response.json();
 		return intr.editReply({ files: [new AttachmentBuilder(body.url)] });
