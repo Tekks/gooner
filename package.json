@@ -1,6 +1,6 @@
 {
   "name": "gooner",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Cutie",
   "type": "module",
   "scripts": {
@@ -20,12 +20,14 @@
   },
   "dependencies": {
     "chalk": "^5.3.0",
-    "discord.js": "^14.16.2",
+    "discord.js": "^14.16.3",
     "discord.js-rate-limiter": "^1.3.2",
-    "dotenv": "^16.4.5",
-    "pino": "^9.4.0",
-    "pino-pretty": "^11.2.2",
-    "typescript": "^5.6.2"
+    "dotenv": "^16.4.7",
+    "mariadb": "^3.4.0",
+    "pino": "^9.5.0",
+    "pino-pretty": "^13.0.0",
+    "sequelize": "^6.37.5",
+    "typescript": "^5.7.2"
   },
   "nodemonConfig": {
     "watch": [

@@ -6,5 +6,11 @@ export interface Config {
     },
     WHITELIST: {
         CATEGORIES: string[]
+    },
+    DATABASE: {
+        USERNAME: string,
+        PASSWORD: string,
+        DATABASE: string,
+        HOST: string,
     }
 }
