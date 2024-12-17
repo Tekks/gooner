@@ -16,7 +16,14 @@ export class BotConfig {
             },
             WHITELIST: {
                 CATEGORIES: process.env.DC_WHITELISTED_CATEGORIES?.split(',') || []
+            },
+            DATABASE: {
+                USERNAME: process.env.DB_USERNAME || "",
+                PASSWORD: process.env.DB_PASSWORD || "",
+                DATABASE: process.env.DB_DATABASE || "",
+                HOST: process.env.DB_HOST || ""
             }
         }
     }
+
 }

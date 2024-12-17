@@ -1,32 +1,39 @@
 import { ActivityType, AutocompleteInteraction, Client, CommandInteraction, Events, Interaction, Message } from "discord.js";
 import { CommandHandler, MessageHandler, UserListenerHandler } from "./handler/index.js";
-import { Command, Config, MessageCommand, UserListener } from "./interfaces/index.js";
-import { BotConfig, CommandExport, Logger } from "./utils/index.js";
-import { PingCommand, TekksAiCommand, WaifuCommand } from "./interactions/commands/index.js";
+import { Command, Config, MessageCommand, UserListener, Model } from "./interfaces/index.js";
+import { BotConfig, CommandExport, Database, Logger } from "./utils/index.js";
+import { PingCommand, VladeysFemboyParadiseCommand, WaifuCommand } from "./interactions/commands/index.js";
 import { DogeMessage, VonzlerMessage } from "./interactions/message/index.js";
 import { DogeListener } from "./interactions/userlistener/index.js";
+import { Femboy } from "./models/index.js";
 
 
 export class dcbot {
 
     private ready = false;
     public config: Config;
+    public database: Database;
 
     public commands: Command[] = [
         new PingCommand(),
         new WaifuCommand(),
-        new TekksAiCommand()
-    ]
+        new VladeysFemboyParadiseCommand(),
+    ];
 
     public messageCommands: MessageCommand[] = [
         new DogeMessage(),
         new VonzlerMessage()
-    ]
+    ];
 
     public userListeners: UserListener[] = [
         new DogeListener()
     ];
 
+    public databaseModels: Model[] = [
+        Femboy
+    ]
+
+    
     private commandHandler = new CommandHandler();
     private messageHandler = new MessageHandler();
     private userListenerHandler = new UserListenerHandler();
@@ -41,6 +48,8 @@ export class dcbot {
     public async init() {
         this.registerEventlisteners();
         await CommandExport.import();
+        this.database = await new Database().init();
+        this.database.initModels(this.databaseModels);
         this.client.login(this.config.BOT.TOKEN);
     }
 
@@ -55,7 +64,7 @@ export class dcbot {
 
     private async onClientReady() {
         this.client.user?.setPresence({ activities: [{ name: 'Cutie <3', type: ActivityType.Playing }] });
-        Logger.info(`${this.client.user?.username} || ${process.env.npm_package_version}`);
+        Logger.info(`${this.client.user?.username}#${this.client.user.discriminator} || ${process.env.npm_package_version}`);
         this.ready = true;
     }
 

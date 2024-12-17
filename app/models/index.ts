@@ -1,0 +1,1 @@
+export { Femboy } from "./femboy-model.js";
