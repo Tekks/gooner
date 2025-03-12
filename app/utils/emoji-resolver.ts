@@ -12,16 +12,24 @@ export class EmojiResolver {
         alpaka04: "gooner_alpaka_04",
         alpaka05: "gooner_alpaka_05",
         alpaka06: "gooner_alpaka_06",
+
         nachoCry: "gooner_nachoCry",
         nachoZiii: "gooner_nachoZiii",
+
         nachoPopcat: "gooner_nachoPopcat",
         elisHalt: "gooner_elisHalt",
+
         weird01: "gooner_weird_01",
         weird02: "gooner_weird_02",
         weird03: "gooner_weird_03",
         weird04: "gooner_weird_04",
         weird05: "gooner_weird_05",
         weird06: "gooner_weird_06",
+
+        mad01: "gooner_mad_01",
+        mad02: "gooner_mad_02",
+        mad03: "gooner_mad_03",
+        mad04: "gooner_mad_04",
     }
 
     public static removeEmojiContext(message: string): string {

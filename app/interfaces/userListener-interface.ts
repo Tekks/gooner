@@ -9,7 +9,7 @@ export interface UserListener {
 }
 
 export interface ResponsePattern {
-    pattern: string[];
+    pattern: RegExp;
     responses: string[];
     reactEmojis: string[];
 }

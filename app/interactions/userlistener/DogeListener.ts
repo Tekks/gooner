@@ -10,17 +10,17 @@ export class DogeListener {
 
     private responsePattern: ResponsePattern[] = [
         {
-            "pattern": ["hallo", "henlo", "huhu"],
+            "pattern": new RegExp("hallo|henlo|huhu", "i"),
             "reactEmojis": [EmojiResolver.CustomEmojis.nachoPopcat],
             "responses": [`Henloooo! :${EmojiResolver.CustomEmojis.nachoPopcat}:`, `Henloooo sweety! :${EmojiResolver.CustomEmojis.nachoZiii}:`]
         },
         {
-            "pattern": ["nachoZiii", "ziii", "nacho", "nachoziiistatic"],
+            "pattern": new RegExp("ziii", "i"),
             "reactEmojis": [EmojiResolver.CustomEmojis.nachoPopcat],
             "responses": [`:${EmojiResolver.CustomEmojis.nachoZiii}: ZIIIIIIIII`, `:${EmojiResolver.CustomEmojis.nachoZiii}: ZIIIIIIIII`]
         },
         {
-            "pattern": ["tekks", "tekksi"],
+            "pattern": new RegExp("tekks", "i"),
             "reactEmojis": [EmojiResolver.CustomEmojis.nachoZiii],
             "responses": [`Doge is n cutie :${EmojiResolver.CustomEmojis.nachoPopcat}:`, `DOGEEEEEEEE :${EmojiResolver.CustomEmojis.nachoPopcat}:`]
         }
@@ -41,19 +41,11 @@ export class DogeListener {
 
 
     private findBestPattern(message: string): ResponsePattern | null {
-        const words = message.toLocaleLowerCase().split(/\s+/);
         let bestMatch: ResponsePattern = null;
-        let maxMatchCount = 0;
         for (const patternObj of this.responsePattern) {
-            let matchCount = 0;
-
-            for (const pattern of patternObj.pattern) {
-                if (words.includes(pattern)) { matchCount++; }
-            }
-
-            if (matchCount > maxMatchCount) {
-                maxMatchCount = matchCount;
+            if (patternObj.pattern.test(message.toLocaleLowerCase())) {
                 bestMatch = patternObj;
+                break;
             }
         }
         return bestMatch;
