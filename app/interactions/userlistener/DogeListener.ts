@@ -11,17 +11,17 @@ export class DogeListener {
     private responsePattern: ResponsePattern[] = [
         {
             "pattern": ["hallo", "henlo", "huhu"],
-            "reactEmoji": EmojiResolver.CustomEmojis.nachoPopcat,
+            "reactEmojis": [EmojiResolver.CustomEmojis.nachoPopcat],
             "responses": [`Henloooo! :${EmojiResolver.CustomEmojis.nachoPopcat}:`, `Henloooo sweety! :${EmojiResolver.CustomEmojis.nachoZiii}:`]
         },
         {
             "pattern": ["nachoZiii", "ziii", "nacho", "nachoziiistatic"],
-            "reactEmoji": `${EmojiResolver.CustomEmojis.nachoPopcat}`,
+            "reactEmojis": [EmojiResolver.CustomEmojis.nachoPopcat],
             "responses": [`:${EmojiResolver.CustomEmojis.nachoZiii}: ZIIIIIIIII`, `:${EmojiResolver.CustomEmojis.nachoZiii}: ZIIIIIIIII`]
         },
         {
             "pattern": ["tekks", "tekksi"],
-            "reactEmoji": `${EmojiResolver.CustomEmojis.nachoZiii}`,
+            "reactEmojis": [EmojiResolver.CustomEmojis.nachoZiii],
             "responses": [`Doge is n cutie :${EmojiResolver.CustomEmojis.nachoPopcat}:`, `DOGEEEEEEEE :${EmojiResolver.CustomEmojis.nachoPopcat}:`]
         }
     ];
@@ -32,9 +32,10 @@ export class DogeListener {
 
         if (this.rateLimiter.take(msg.author.id)) { return; }
 
-        if (pattern.reactEmoji) { await msg.react(EmojiResolver.resolveEmoji(pattern.reactEmoji)); }
-        let response = pattern.responses[Math.floor(Math.random() * pattern.responses.length)];
+        if (pattern.reactEmojis.length == 0) { return; }
+        await msg.react(EmojiResolver.resolveEmoji(pattern.reactEmojis[Math.floor(Math.random() * pattern.reactEmojis.length)]));
 
+        const response = pattern.responses[Math.floor(Math.random() * pattern.responses.length)];
         await msg.reply(EmojiResolver.replaceEmojisInMessage(response));
     }
 

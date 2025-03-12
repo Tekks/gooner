@@ -11,5 +11,5 @@ export interface UserListener {
 export interface ResponsePattern {
     pattern: string[];
     responses: string[];
-    reactEmoji: string | null;
+    reactEmojis: string[];
 }

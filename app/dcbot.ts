@@ -4,7 +4,7 @@ import { Command, Config, MessageCommand, UserListener, Model } from "./interfac
 import { BotConfig, CommandExport, Database, Logger } from "./utils/index.js";
 import { PingCommand, VladeysFemboyParadiseCommand, WaifuCommand } from "./interactions/commands/index.js";
 import { DogeMessage, VonzlerMessage } from "./interactions/message/index.js";
-import { DogeListener } from "./interactions/userlistener/index.js";
+import { DogeListener, KarloListener } from "./interactions/userlistener/index.js";
 import { Femboy } from "./models/index.js";
 
 
@@ -26,7 +26,8 @@ export class dcbot {
     ];
 
     public userListeners: UserListener[] = [
-        new DogeListener()
+        new DogeListener(),
+        new KarloListener()
     ];
 
     public databaseModels: Model[] = [
