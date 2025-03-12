@@ -7,9 +7,9 @@ import { ResponsePattern } from "../../interfaces/index.js";
 export class KarloListener {
 
     public userName: string = 'ork_olrak';
-    public rateLimiter: CustomRateLimiter = new CustomRateLimiter(1, 1 * 10 * 1000, RateLimiterType.USER);
+    public rateLimiter: CustomRateLimiter = new CustomRateLimiter(1, 1 * 5 * 1000, RateLimiterType.USER);
 
-    private emojiList = [
+    private emojiList_weird = [
         EmojiResolver.CustomEmojis.weird01,
         EmojiResolver.CustomEmojis.weird02,
         EmojiResolver.CustomEmojis.weird03,
@@ -17,11 +17,24 @@ export class KarloListener {
         EmojiResolver.CustomEmojis.weird05,
         EmojiResolver.CustomEmojis.weird06
     ];
+
+    private emojiList_mad = [
+        EmojiResolver.CustomEmojis.mad01,
+        EmojiResolver.CustomEmojis.mad02,
+        EmojiResolver.CustomEmojis.mad03,
+        EmojiResolver.CustomEmojis.mad04
+    ];
+
     
     private responsePattern: ResponsePattern[] = [
         {
-            "pattern": ["weird", "weirdge", "pepeweird", "weirddude"],
-            "reactEmojis": this.emojiList,
+            "pattern": new RegExp("weird", "i"),
+            "reactEmojis": this.emojiList_weird,
+            "responses": []
+        },
+        {
+            "pattern": new RegExp("mad", "i"),
+            "reactEmojis": this.emojiList_mad,
             "responses": []
         }
     ];
@@ -43,17 +56,11 @@ export class KarloListener {
     }
 
     private findBestPattern(message: string): ResponsePattern | null {
-        const words = message.toLocaleLowerCase().split(/\s+/);
         let bestMatch: ResponsePattern = null;
-        let maxMatchCount = 0;
         for (const patternObj of this.responsePattern) {
-            let matchCount = 0;
-
-            for (const pattern of patternObj.pattern) { if (words.includes(pattern)) { matchCount++; } }
-
-            if (matchCount > maxMatchCount) {
-                maxMatchCount = matchCount;
+            if (patternObj.pattern.test(message.toLocaleLowerCase())) {
                 bestMatch = patternObj;
+                break;
             }
         }
         return bestMatch;
