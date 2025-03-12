@@ -16,6 +16,12 @@ export class EmojiResolver {
         nachoZiii: "gooner_nachoZiii",
         nachoPopcat: "gooner_nachoPopcat",
         elisHalt: "gooner_elisHalt",
+        weird01: "gooner_weird_01",
+        weird02: "gooner_weird_02",
+        weird03: "gooner_weird_03",
+        weird04: "gooner_weird_04",
+        weird05: "gooner_weird_05",
+        weird06: "gooner_weird_06",
     }
 
     public static removeEmojiContext(message: string): string {

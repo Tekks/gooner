@@ -10,12 +10,12 @@ export class VonzlerMessage{
     public deferType = DeferType.PUBLIC;
 
     private emoteList = [
-        "gooner_alpaka_01",
-        "gooner_alpaka_02",
-        "gooner_alpaka_03",
-        "gooner_alpaka_04",
-        "gooner_alpaka_05",
-        "gooner_alpaka_06",
+        EmojiResolver.CustomEmojis.alpaka01,
+        EmojiResolver.CustomEmojis.alpaka02,
+        EmojiResolver.CustomEmojis.alpaka03,
+        EmojiResolver.CustomEmojis.alpaka04,
+        EmojiResolver.CustomEmojis.alpaka05,
+        EmojiResolver.CustomEmojis.alpaka06
     ]
 
     public async execute(channel: TextChannel, ...args: String[]){
