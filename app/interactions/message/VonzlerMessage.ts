@@ -13,9 +13,7 @@ export class VonzlerMessage{
         EmojiResolver.CustomEmojis.alpaka01,
         EmojiResolver.CustomEmojis.alpaka02,
         EmojiResolver.CustomEmojis.alpaka03,
-        EmojiResolver.CustomEmojis.alpaka04,
-        EmojiResolver.CustomEmojis.alpaka05,
-        EmojiResolver.CustomEmojis.alpaka06
+        EmojiResolver.CustomEmojis.alpaka04
     ]
 
     public async execute(channel: TextChannel, ...args: String[]){

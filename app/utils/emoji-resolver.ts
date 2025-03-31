@@ -8,10 +8,8 @@ export class EmojiResolver {
     public static CustomEmojis = {
         alpaka01: "gooner_alpaka_01",
         alpaka02: "gooner_alpaka_02",
-        alpaka03: "gooner_alpaka_03",
-        alpaka04: "gooner_alpaka_04",
-        alpaka05: "gooner_alpaka_05",
-        alpaka06: "gooner_alpaka_06",
+        alpaka03: "gooner_alpaka_04",
+        alpaka04: "gooner_alpaka_06",
 
         nachoCry: "gooner_nachoCry",
         nachoZiii: "gooner_nachoZiii",
