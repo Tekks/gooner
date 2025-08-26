@@ -1,4 +1,4 @@
-import { AutocompleteInteraction, CommandInteraction, Interaction } from "discord.js";
+import { AutocompleteInteraction, CommandInteraction, Interaction, MessageFlags } from "discord.js";
 import { dcbot } from "../index.js";
 import { Command, DeferType } from "../interfaces/index.js";
 import { EmojiResolver, Logger } from "../utils/index.js";
@@ -20,10 +20,10 @@ export class CommandHandler {
         try {
             switch (command.deferType) {
                 case DeferType.PUBLIC:
-                    await intr.deferReply({ ephemeral: false });
+                    await intr.deferReply({  });
                     break;
                 case DeferType.HIDDEN:
-                    await intr.deferReply({ ephemeral: true });
+                    await intr.deferReply({ flags: MessageFlags.Ephemeral });
                     break;
             }
             await command.execute(intr);
@@ -32,7 +32,7 @@ export class CommandHandler {
             if (intr.deferred) {
                 await intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
             } else {
-                await intr.reply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten`, ephemeral: true });
+                await intr.reply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten`, flags: MessageFlags.Ephemeral });
             }
         }
     }

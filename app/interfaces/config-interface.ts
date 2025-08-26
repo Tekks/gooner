@@ -12,5 +12,11 @@ export interface Config {
         PASSWORD: string,
         DATABASE: string,
         HOST: string,
+    },
+    APIS: {
+        GELBOORU: {
+            ID: string,
+            TOKEN: string
+        }
     }
 }

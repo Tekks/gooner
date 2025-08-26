@@ -22,6 +22,12 @@ export class BotConfig {
                 PASSWORD: process.env.DB_PASSWORD || "",
                 DATABASE: process.env.DB_DATABASE || "",
                 HOST: process.env.DB_HOST || ""
+            },
+            APIS: {
+                GELBOORU:{
+                    ID: process.env.APIS_GELBOORU_ID || "",
+                    TOKEN: process.env.APIS_GELBOORU_TOKEN || ""
+                }
             }
         }
     }

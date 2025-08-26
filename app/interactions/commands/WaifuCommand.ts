@@ -1,6 +1,7 @@
 import { AttachmentBuilder, ChannelType, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { DeferType } from '../../interfaces/index.js';
 import { EmojiResolver } from '../../utils/index.js';
+import { dcbot } from "../../index.js";
 
 
 export class WaifuCommand {
@@ -54,28 +55,63 @@ export class WaifuCommand {
 				)
 		)
 
-		.addSubcommand(subcommand => 
+		.addSubcommand(subcommand =>
 			subcommand.setName('nsfw')
 				.setDescription('NSFW Waifu')
 				.addStringOption(option =>
 					option.setName('type')
-					.setDescription('Art der Waifu :>')
-					.setRequired(true)
-					.setChoices(
-						this.choices.filter((choice) => choice.types.includes('nsfw')).map((choice) => { return {name: choice.name, value: choice.value} })
-					)
+						.setDescription('Art der Waifu :>')
+						.setRequired(true)
+						.setChoices(
+							this.choices.filter((choice) => choice.types.includes('nsfw')).map((choice) => { return { name: choice.name, value: choice.value } })
+						)
 				)
-			);
+		)
+
+		.addSubcommand(subcommand =>
+			subcommand.setName('boyfu')
+				.setDescription('NSFW Secret Doge Command')
+		);
 
 
 	public async execute(intr: ChatInputCommandInteraction) {
 		const category = intr.options.getSubcommand();
-		if (category === 'nsfw' && (intr.channel.type === ChannelType.GuildText || intr.channel.type === ChannelType.GuildVoice) && intr.channel.nsfw === false) {
-			return intr.editReply(`${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.elisHalt)} In NSFW Channels Only!`);
+		if (intr.channel.type !== ChannelType.GuildText) {
+			return intr.editReply(`${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.elisHalt)} In Text Channels Only!`);
 		}
 
-		const response = await fetch(`https://api.waifu.pics/${category}/${intr.options.getString('type')}`);
-		const body = await response.json();
-		return intr.editReply({ files: [new AttachmentBuilder(body.url)] });
+		const isNSFWChannel = intr.channel.nsfw;
+
+		var attachment = null;
+
+		if (category == 'boyfu') {
+			try {
+				const response = await fetch(`https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1&tags=sort:random%20astolfo&api_key=${dcbot.config.APIS.GELBOORU.TOKEN}&user_id=${dcbot.config.APIS.GELBOORU.ID}`);
+				const body = await response.json();
+				const imageUrl = body.post[0].file_url;
+
+				const extMatch = imageUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+				const ext = extMatch ? extMatch[0] : '.png';
+				attachment = new AttachmentBuilder(imageUrl).setName(`${(isNSFWChannel) ? "": "SPOILER_"}image${ext}`);
+			} catch (e) {
+				return intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
+			}
+			return intr.editReply({ files: [attachment] });
+		}
+
+		var attachment = null;
+		try {
+			const response = await fetch(`https://api.waifu.pics/${category}/${intr.options.getString('type')}`);
+			const body = await response.json();
+			const imageUrl = body.url;
+
+			const extMatch = imageUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+			const ext = extMatch ? extMatch[0] : '.png';
+			attachment = new AttachmentBuilder(imageUrl).setName(`${(isNSFWChannel) ? "": "SPOILER_"}image${ext}`);
+		} catch (e) {
+			return intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
+		}
+
+		return intr.editReply({ files: [attachment] });
 	}
 }
