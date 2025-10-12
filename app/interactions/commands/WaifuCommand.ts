@@ -112,7 +112,7 @@ export class WaifuCommand {
 
 			const extMatch = imageUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
 			const ext = extMatch ? extMatch[0] : '.png';
-			attachment = new AttachmentBuilder(imageUrl).setName(`${(isNSFWChannel) ? "SPOILER_": ""}image${ext}`);
+			attachment = new AttachmentBuilder(imageUrl).setName(`image${ext}`);
 		} catch (e) {
 			return intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
 		}
