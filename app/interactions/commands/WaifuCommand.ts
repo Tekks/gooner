@@ -79,8 +79,13 @@ export class WaifuCommand {
 		if (intr.channel.type !== ChannelType.GuildText) {
 			return intr.editReply(`${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.elisHalt)} In Text Channels Only!`);
 		}
-
+		
 		const isNSFWChannel = intr.channel.nsfw;
+
+		if ((category === "nsfw" || category === "boyfu") && !isNSFWChannel){
+			return intr.editReply(`${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.elisHalt)} In NSFW Channels Only!`);
+		}
+
 
 		var attachment = null;
 
@@ -92,7 +97,7 @@ export class WaifuCommand {
 
 				const extMatch = imageUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
 				const ext = extMatch ? extMatch[0] : '.png';
-				attachment = new AttachmentBuilder(imageUrl).setName(`${(isNSFWChannel) ? "": "SPOILER_"}image${ext}`);
+				attachment = new AttachmentBuilder(imageUrl);
 			} catch (e) {
 				return intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
 			}
@@ -107,7 +112,7 @@ export class WaifuCommand {
 
 			const extMatch = imageUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
 			const ext = extMatch ? extMatch[0] : '.png';
-			attachment = new AttachmentBuilder(imageUrl).setName(`${(isNSFWChannel) ? "": "SPOILER_"}image${ext}`);
+			attachment = new AttachmentBuilder(imageUrl).setName(`${(isNSFWChannel) ? "SPOILER_": ""}image${ext}`);
 		} catch (e) {
 			return intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
 		}
