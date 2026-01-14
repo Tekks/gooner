@@ -52,11 +52,10 @@ export class DogeListener {
     }
 
     public async prechecks(msg: Message): Promise<boolean> {
-        // Tekks check
-        await msg.guild.members.fetch();
+        try { await msg.guild.members.fetch(); } catch (e) {}
         let tekks = msg.guild.members.cache.find(member => member.user.username === 'tekks');
         if (!tekks) { return false; }
-        await tekks.fetch();
+        try { await tekks.fetch(); } catch (e) {}
         if (tekks.presence?.status === undefined ) { return true; }
         if (tekks.presence?.status === PresenceUpdateStatus.Offline) { return true; }
         return false;
