@@ -17,6 +17,9 @@ export interface Config {
         GELBOORU: {
             ID: string,
             TOKEN: string
+        },
+        WAIFUIM: {
+            TOKEN: string
         }
     }
 }

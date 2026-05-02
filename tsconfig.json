@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ESNext", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "experimentalDecorators": true, /* Enable experimental support for legacy experimental decorators. */
-    "emitDecoratorMetadata": true, /* Emit design-type metadata for decorated declarations in source files. */
-    "module": "ESNext", /* Specify what module code is generated. */
-    "rootDir": "./app", /* Specify the root folder within your source files. */
-    "baseUrl": "./",
-    "moduleResolution": "Node", /* Specify how TypeScript looks up a file from a given module specifier. */
-    "outDir": "./dist", /* Specify an output folder for all emitted files. */
-    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
-    "strict": false, /* Enable all strict type-checking options. */
-    "allowUnusedLabels": true, /* Disable error reporting for unused labels. */
+    "target": "ESNext", 
+    "experimentalDecorators": true, 
+    "emitDecoratorMetadata": true,
+    "module": "ESNext", 
+    "rootDir": "./app", 
+    "moduleResolution": "bundler", 
+    "outDir": "./dist",
+    "esModuleInterop": true, 
+    "forceConsistentCasingInFileNames": true, 
+    "strict": false, 
+    "allowUnusedLabels": true,
     "sourceMap": true,
     "paths": {},
   },

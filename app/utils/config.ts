@@ -27,6 +27,9 @@ export class BotConfig {
                 GELBOORU:{
                     ID: process.env.APIS_GELBOORU_ID || "",
                     TOKEN: process.env.APIS_GELBOORU_TOKEN || ""
+                },
+                WAIFUIM: {
+                    TOKEN: process.env.APIS_WAIFUIM_TOKEN || ""
                 }
             }
         }

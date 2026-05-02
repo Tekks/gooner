@@ -45,27 +45,27 @@ export class WaifuCommand {
 		.addSubcommand(subcommand =>
 			subcommand.setName('sfw')
 				.setDescription('SFW Waifu')
-				.addStringOption(option =>
-					option.setName('type')
-						.setDescription('Art der Waifu :>')
-						.setRequired(true)
-						.addChoices(
-							this.choices.filter((choice) => choice.types.includes('sfw')).map((choice) => { return { name: choice.name, value: choice.value } })
-						)
-				)
+				// .addStringOption(option =>
+				// 	option.setName('type')
+				// 		.setDescription('Art der Waifu :>')
+				// 		.setRequired(true)
+				// 		.addChoices(
+				// 			this.choices.filter((choice) => choice.types.includes('sfw')).map((choice) => { return { name: choice.name, value: choice.value } })
+				// 		)
+				// )
 		)
 
 		.addSubcommand(subcommand =>
 			subcommand.setName('nsfw')
 				.setDescription('NSFW Waifu')
-				.addStringOption(option =>
-					option.setName('type')
-						.setDescription('Art der Waifu :>')
-						.setRequired(true)
-						.setChoices(
-							this.choices.filter((choice) => choice.types.includes('nsfw')).map((choice) => { return { name: choice.name, value: choice.value } })
-						)
-				)
+				// .addStringOption(option =>
+				// 	option.setName('type')
+				// 		.setDescription('Art der Waifu :>')
+				// 		.setRequired(true)
+				// 		.setChoices(
+				// 			this.choices.filter((choice) => choice.types.includes('nsfw')).map((choice) => { return { name: choice.name, value: choice.value } })
+				// 		)
+				// )
 		)
 
 		.addSubcommand(subcommand =>
@@ -106,9 +106,18 @@ export class WaifuCommand {
 
 		var attachment = null;
 		try {
-			const response = await fetch(`https://api.waifu.pics/${category}/${intr.options.getString('type')}`);
+			
+			const myHeaders = new Headers();
+			myHeaders.append("Accept", "application/json");
+			myHeaders.append("X-Api-Key", dcbot.config.APIS.WAIFUIM.TOKEN);
+
+			const response = await fetch(`https://api.waifu.im/images?IsNsfw=${category === 'nsfw' ? 'true' : 'false'}`, {
+				method: "GET",
+				headers: myHeaders
+			});
+
 			const body = await response.json();
-			const imageUrl = body.url;
+			const imageUrl = body.items[0].url;
 
 			const extMatch = imageUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
 			const ext = extMatch ? extMatch[0] : '.png';
