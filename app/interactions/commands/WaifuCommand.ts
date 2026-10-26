@@ -1,6 +1,6 @@
 import { AttachmentBuilder, ChannelType, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { DeferType } from '../../interfaces/index.js';
-import { EmojiResolver } from '../../utils/index.js';
+import { EmojiResolver, Logger } from '../../utils/index.js';
 import { dcbot } from "../../index.js";
 
 
@@ -88,44 +88,48 @@ export class WaifuCommand {
 
 
 		var attachment = null;
-
-		if (category == 'boyfu') {
-			try {
-				const response = await fetch(`https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1&tags=sort:random%20astolfo&api_key=${dcbot.config.APIS.GELBOORU.TOKEN}&user_id=${dcbot.config.APIS.GELBOORU.ID}`);
+		try {
+			if (category === 'sfw') {
+				const response = await fetch('https://nekos.best/api/v2/waifu');
 				const body = await response.json();
-				const imageUrl = body.post[0].file_url;
+				const imageUrl: string = body.results[0].url;
 
 				const extMatch = imageUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
 				const ext = extMatch ? extMatch[0] : '.png';
-				attachment = new AttachmentBuilder(imageUrl);
-			} catch (e) {
-				return intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
+				attachment = new AttachmentBuilder(imageUrl).setName(`image${ext}`);
+			} else if (category === 'nsfw') {
+				attachment = await this.gelbooruAttachment('rating:explicit 1girl -video');
+			} else {
+				attachment = await this.gelbooruAttachment('astolfo -video');
 			}
-			return intr.editReply({ files: [attachment] });
-		}
-
-		var attachment = null;
-		try {
-			
-			const myHeaders = new Headers();
-			myHeaders.append("Accept", "application/json");
-			myHeaders.append("X-Api-Key", dcbot.config.APIS.WAIFUIM.TOKEN);
-
-			const response = await fetch(`https://api.waifu.im/images?IsNsfw=${category === 'nsfw' ? 'true' : 'false'}`, {
-				method: "GET",
-				headers: myHeaders
-			});
-
-			const body = await response.json();
-			const imageUrl = body.items[0].url;
-
-			const extMatch = imageUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
-			const ext = extMatch ? extMatch[0] : '.png';
-			attachment = new AttachmentBuilder(imageUrl).setName(`image${ext}`);
 		} catch (e) {
+			Logger.error(`waifu ${category}: ${e}${e?.cause ? ` (${e.cause})` : ''}`);
 			return intr.editReply({ content: `${EmojiResolver.resolveEmoji(EmojiResolver.CustomEmojis.nachoCry)} Es ist ein Fehler aufgetreten` });
 		}
 
 		return intr.editReply({ files: [attachment] });
+	}
+
+	private async gelbooruAttachment(tags: string): Promise<AttachmentBuilder> {
+		const query = encodeURIComponent(`sort:random ${tags}`);
+		const response = await fetch(`https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1&tags=${query}&api_key=${dcbot.config.APIS.GELBOORU.TOKEN}&user_id=${dcbot.config.APIS.GELBOORU.ID}`);
+		const body = await response.json();
+		const post = body.post[0];
+		const imageUrl: string = post.sample_url || post.file_url;
+
+		const imageResponse = await fetch(imageUrl, {
+			headers: {
+				"User-Agent": `gooner-discord-bot/${process.env.npm_package_version ?? 'dev'}`,
+				"Referer": "https://gelbooru.com/"
+			}
+		});
+		const contentType = imageResponse.headers.get('content-type') ?? '';
+		if (!imageResponse.ok || !contentType.startsWith('image/')) {
+			throw new Error(`Gelbooru lieferte ${imageResponse.status} ${contentType} für ${imageUrl}`);
+		}
+
+		const ext = contentType.split('/')[1].split(';')[0].replace('jpeg', 'jpg');
+		const buffer = Buffer.from(await imageResponse.arrayBuffer());
+		return new AttachmentBuilder(buffer).setName(`image.${ext}`);
 	}
 }
